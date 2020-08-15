@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <>
-    <App />
+    <App apiURL="restaurants.json" />
   </>,
   document.getElementById('root')
 );
