@@ -8,12 +8,12 @@ export const RestaurantMap = ({ apiKey, lat, lng, text }) => {
     useEffect(() => document.addEventListener("click", handleClickOutside), []);
 
     const handleClick = () => {
-        setIsVisible(!isVisible);
+        setIsVisible(b => !b);
     }
 
     const handleClickOutside = (event) => {
         if(wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-            setIsVisible(false);
+            setIsVisible(() => false);
         }
     }
 

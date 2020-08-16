@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { MapContainer } from './App/MapContainer';
 import { ListRestaurants } from './App/ListRestaurants';
+import { Views } from './App/Views';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -34,11 +35,17 @@ export default class App extends Component {
     if(this.state.isLoading) {
       return(null);
     }
+    
     return (
-      <div className="d-lg-flex justify-content-around">
-        <ListRestaurants restaurants={this.state.data} />
-        <MapContainer apiKey="AIzaSyC7gHF4noGLTnBRfnHvQqmKU6GtK6D-ggM" restaurants={this.state.data} />
-      </div>
+      <>
+        <div className="d-lg-flex justify-content-around">
+          <ListRestaurants restaurants={this.state.data} />
+          <MapContainer apiKey="AIzaSyC7gHF4noGLTnBRfnHvQqmKU6GtK6D-ggM" restaurants={this.state.data} />
+        </div>
+        <div id="views">
+          <Views restaurants={this.state.data} />
+        </div>
+      </>
     );
   }
 }
