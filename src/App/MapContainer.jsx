@@ -72,9 +72,9 @@ export class MapContainer extends Component {
             {this.props.restaurants.map((restaurant, i) => this.state.bounds !== null &&
             (this.averageRatings(restaurant.ratings) >= this.state.min || this.state.min === "") &&
             (this.averageRatings(restaurant.ratings) <= this.state.max || this.state.max === "") &&
-              <RestaurantMap apiKey={this.props.apiKey} key={i}
+              <RestaurantMap apiKey={this.props.apiKey} key={i} index={i}
                 lat={restaurant.lat} lng={restaurant.lng}
-                text={restaurant.restaurantName} mapBounds={this.state.bounds}/>)}
+                text={restaurant.restaurantName} mapBounds={this.state.bounds} />)}
           </GoogleMapReact>
         </div>
       </>

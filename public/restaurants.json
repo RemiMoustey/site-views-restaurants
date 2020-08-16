@@ -30,5 +30,85 @@
              "comment":"J'ai trouvé ça correct, sans plus"
           }
        ]
-    }
+    },
+    {
+      "restaurantName":"Kim Oanh",
+      "address":"39 Rue des Petites Écuries, 75010 Paris",
+      "lat":45.7783783,
+      "lng":3.0848167,
+      "ratings":[
+         {
+            "stars":5,
+            "comment":"Très bon qualité prix, décoration aussi bien des lieux que dans l assiette. Très bonne surprise !"
+         },
+         {
+            "stars":3,
+            "comment":"Restaurant ou les plats sont simples et non gastronomiques, le personnel de service est très aimable. Mais le patron est moins accueillant, il est plutôt dans l'impatience de vous encaissez, pour peut-être fermer ces portes et éteindre la lumière au plus vite. Nous nous attendions à des plats un peu plus raffinés, ils ne sont pas trop copieux. La soupe phô est un peu maigre. Reste un peu cher pour des plats simples en réalisation. Recommandations mitigées..."
+         },
+         {
+            "stars":4,
+            "comment":"Bon et pas cher."
+         }
+      ]
+   },
+   {
+      "restaurantName":"L'Imaginaire",
+      "address":"23 Rue Fautras, 29200 Brest",
+      "lat":48.3906258,
+      "lng":-4.4910825,
+      "ratings":[
+         {
+            "stars":5,
+            "comment":"Très belle découverte gastronomique. Les menus midi sont imbattables niveau qualité et prix. Le cadre et l’accueil sont très chaleureux. Merci pour ce beau moment ! Je recommande sans hésitation."
+         },
+         {
+            "stars":5,
+            "comment":"Découvert malgré le confinement grâce aux paniers à emporter. Boisson divine. Dessert extraordinaire. Et club sandwich merveilleux et adapté pour un végétarien (sur demande). Merci !"
+         }
+      ]
+   },
+   {
+      "restaurantName":"Zakhang",
+      "address":"5 Quai Créqui, 38000 Grenoble",
+      "lat":45.1925136,
+      "lng":5.7235561,
+      "ratings":[
+         {
+            "stars":4,
+            "comment":"Accueil et lieu très agréables. Pain maison excellent. Très bons plats, peut-être un peu trop épicés pour moi. Je reviendrai avec plaisir !"
+         },
+         {
+            "stars":5,
+            "comment":"Qualité des produits et plats servis. Subtilité et originalité des saveurs. Accueil très chaleureux. Restaurant que je recommande vivement."
+         },
+         {
+            "stars":5,
+            "comment":"Super ! Étonnant ! Surprenant ! Délicieux !"
+         }
+      ]
+   },
+   {
+      "restaurantName":"Le Millésime",
+      "address":"17 Rue Smolett, 06300 Nice",
+      "lat":43.7032137,
+      "lng":7.2853861,
+      "ratings":[
+         {
+            "stars":4,
+            "comment":"Un très bel apéro sur une terrasse de charme. La serveuse nous a fourni un super conseil au niveau du vin. Un très beau moment."
+         },
+         {
+            "stars":5,
+            "comment":"Excellent, tout est parfait. Restaurant à découvrir absolument avec toutes ces saveurs en bouche."
+         },
+         {
+            "stars":5,
+            "comment":"Une exceptionnelle expérience culinaire avec une cuisine du chef pleine de saveurs et un service chaleureux !"
+         },
+         {
+            "stars":5,
+            "comment":"Une excellente adresse, un incontournable à Nice. Un chef très humble ! Un service de qualité. Les plats ? Un régal ! Des produits frais, fondants. Je recommande !"
+         }
+      ]
+   }
  ]

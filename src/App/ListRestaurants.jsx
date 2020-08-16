@@ -10,7 +10,7 @@ const averageRatings = (ratings) => {
 
 export const ListRestaurants = ({restaurants, mapBounds, min, max}) => ( 
     mapBounds !== null &&
-    <ul id="list">{restaurants.map((restaurant, i) => 
+    <ul id="list" className="mr-3">{restaurants.map((restaurant, i) => 
         restaurant.lat > mapBounds.se.lat && restaurant.lat > mapBounds.sw.lat &&
         restaurant.lat < mapBounds.ne.lat && restaurant.lat < mapBounds.nw.lat &&
         restaurant.lng > mapBounds.nw.lng && restaurant.lng > mapBounds.sw.lng &&
@@ -18,11 +18,11 @@ export const ListRestaurants = ({restaurants, mapBounds, min, max}) => (
         (averageRatings(restaurant.ratings) >= min || min === "")
         && (averageRatings(restaurant.ratings) <= max || max === "") &&
         <li className="mb-3" key={i}>
-            <span id={restaurant.restaurantName} className="text-underline">
+            <span id={"restaurant" + i} className="text-underline">
                 {restaurant.restaurantName}
             </span>
             <br />
-            Moyenne : {averageRatings(restaurant.ratings)}
+            Moyenne : {averageRatings(restaurant.ratings).toFixed(2)}
         </li>)}
     </ul>
 );

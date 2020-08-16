@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StreetView } from './StreetView';
 
-export const RestaurantMap = ({ apiKey, lat, lng, text, mapBounds }) => {
+export const RestaurantMap = ({ apiKey, index, lat, lng, text }) => {
     const wrapperRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
 
@@ -12,7 +12,7 @@ export const RestaurantMap = ({ apiKey, lat, lng, text, mapBounds }) => {
         document.querySelectorAll(".views-restaurant").forEach((views) => {
             views.style.display = "none";
         });
-        document.querySelector("#views" + text).style.display = "block";
+        document.querySelector("#views-restaurant" + index).style.display = "block";
         window.scrollTo(0, document.body.scrollHeight);
     }
 
@@ -23,7 +23,7 @@ export const RestaurantMap = ({ apiKey, lat, lng, text, mapBounds }) => {
     }
 
     return <>
-        <p><span id={text} className="marker" style={{backgroundColor: "green", color: "white", cursor: "pointer"}} onClick={handleClick} ref={wrapperRef}>{text}</span></p>
+        <p><span id={"restaurant" + index} className="marker" style={{backgroundColor: "green", color: "white", cursor: "pointer"}} onClick={handleClick} ref={wrapperRef}>{text}</span></p>
         { isVisible && <StreetView apiKey={apiKey} lat={lat} lng={lng} />}
     </>
 }
