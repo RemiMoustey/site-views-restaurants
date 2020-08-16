@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { MapContainer } from './App/MapContainer';
-import { ListRestaurants } from './App/ListRestaurants';
 import { Views } from './App/Views';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -39,8 +38,7 @@ export default class App extends Component {
     return (
       <>
         <div className="d-lg-flex justify-content-around">
-          <ListRestaurants restaurants={this.state.data} />
-          <MapContainer apiKey="AIzaSyC7gHF4noGLTnBRfnHvQqmKU6GtK6D-ggM" restaurants={this.state.data} />
+          <MapContainer apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} restaurants={this.state.data} />
         </div>
         <div id="views">
           <Views restaurants={this.state.data} />
