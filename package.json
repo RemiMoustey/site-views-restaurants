@@ -11,7 +11,10 @@
     "google-maps-react": "^2.0.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-google-map-street-view": "^1.1.0",
+    "react-google-maps": "^9.4.5",
     "react-scripts": "3.4.3",
+    "react-streetview": "^1.1.1",
     "yarn": "^1.22.4"
   },
   "scripts": {

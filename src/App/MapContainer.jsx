@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { RestaurantMap } from './RestaurantMap';
-import GoogleMapReact  from 'google-map-react';
 import { UserMap } from './UserMap';
+import GoogleMapReact  from 'google-map-react';
 
 export class MapContainer extends Component {
   constructor(props) {
@@ -9,7 +9,9 @@ export class MapContainer extends Component {
 
     this.state = {
       center: null,
-      zoom: 7
+      zoom: 7,
+      streetView: false,
+      clickMarker: false
     }
   }
 
@@ -35,17 +37,16 @@ export class MapContainer extends Component {
       return <p className="ml-2">Chargement en cours...</p>;
     }
     return (
-      <div id="map" style={{ height: '100vh', width: '80%' }}>
+      <div id="map" style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: this.props.apiKey }}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}>
           <UserMap lat={this.state.center.lat} lng={this.state.center.lng} />
           {this.props.restaurants.map((restaurant, i) =>
-            <RestaurantMap lat={restaurant.lat} 
-              lng={restaurant.lng}
-              text={restaurant.restaurantName}
-              key={i}/>)}
+            <RestaurantMap apiKey={this.props.apiKey} key={i}
+              lat={restaurant.lat} lng={restaurant.lng}
+              text={restaurant.restaurantName}/>)}
         </GoogleMapReact>
       </div>
     );
