@@ -17,33 +17,36 @@ export default class App extends Component {
   }
 
   componentDidMount = () => {
-    this.setState({isLoading: true});
-    fetch(this.props.apiURL)
-    .then(response => {
-        if(response.ok) {
-            return response.json();
-        } else {
-            throw new Error("Erreur lors du chargement de la liste des restaurants");
-        }
-    })
-    .then(data => this.setState({ data: data, isLoading: false }))
-    .catch(error => this.setState({ error }));
+    if(this.state.data === null) {
+      this.setState({isLoading: true});
+      fetch(this.props.apiURL)
+      .then(response => {
+          if(response.ok) {
+              return response.json();
+          } else {
+              throw new Error("Erreur lors du chargement de la liste des restaurants");
+          }
+      })
+      .then(data => this.setState({ data: data, isLoading: false }))
+      .catch(error => this.setState({ error }));
+    }
   }
   
   render = () => {
     if(this.state.isLoading) {
       return(null);
     }
-    
+
     return (
-      <>
-        <div className="d-lg-flex justify-content-around">
+      <div className="container">
+        <h1 className="text-center">Site d'avis de restaurants</h1>
+        <div>
           <MapContainer apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} restaurants={this.state.data} />
         </div>
-        <div id="views">
+        <div id="views" style={{display: "none"}}>
           <Views restaurants={this.state.data} />
         </div>
-      </>
+      </div>
     );
   }
 }

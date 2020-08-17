@@ -7,14 +7,18 @@ export class Filter extends Component {
     handleMaxChange = (e) => this.props.onMaxChange(e.target.value);
 
     render = () => (
-        <form>
-            <p>Filtrer par notes</p>
-            <label htmlFor="min">Minimum :</label>
-            <input className="ml-1" type="number" name="min" id="min" min="1" max="5"
-            value={this.props.min} onChange={this.handleMinChange} /><br />
-            <label htmlFor="max">Maximum : </label>
-            <input className="ml-1" type="number" name="max" id="max" min="1" max="5"
-            value={this.props.max} onChange={this.handleMaxChange} />
+        <form className="text-center">
+            <h2>Filtrer par notes</h2>
+            <div className="form-group">
+                <label htmlFor="min" className="mr-1">Minimum :</label>
+                <input type="number" name="min" id="min" min="1" max="5"
+                value={this.props.min} onChange={this.handleMinChange} />
+            </div>
+            <div className="form-group">
+                <label htmlFor="max" className="mr-1">Maximum : </label>
+                <input type="number" name="max" id="max" min="1" max="5"
+                value={this.props.max} onChange={this.handleMaxChange} />
+            </div>
         </form>
     );
 }

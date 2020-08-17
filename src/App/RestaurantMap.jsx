@@ -12,8 +12,10 @@ export const RestaurantMap = ({ apiKey, index, lat, lng, text }) => {
         document.querySelectorAll(".views-restaurant").forEach((views) => {
             views.style.display = "none";
         });
+        document.getElementById("message-view-added").style.display = "none";
         document.querySelector("#views-restaurant" + index).style.display = "block";
-        window.scrollTo(0, document.body.scrollHeight);
+        document.querySelector("#add-view").style.display = "block";
+        document.querySelector("#views").style.display = "block";
     }
 
     const handleClickOutside = (event) => {
