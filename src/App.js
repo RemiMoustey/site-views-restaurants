@@ -43,7 +43,7 @@ export default class App extends Component {
         <div>
           <MapContainer apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} restaurants={this.state.data} />
         </div>
-        <div id="views" style={{display: "none"}}>
+        <div id="views" style={{display: "none", marginTop: "100px"}}>
           <Views restaurants={this.state.data} />
         </div>
       </div>
