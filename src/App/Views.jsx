@@ -71,7 +71,8 @@ export const Views = ({ restaurants }) => {
         let currentList = getCurrentList(document.querySelectorAll(".views-restaurant"));
         let nameStorage = "addedViews" + currentList.getAttribute("id")
         .slice((currentList.getAttribute("id").length - 1), currentList.getAttribute("id").length);
-        if(isSameComment(JSON.parse(sessionStorage.getItem(nameStorage)), e.target.elements.comment.value)) {
+        console.log(sessionStorage.getItem("addedViews6"))
+        if(JSON.parse(sessionStorage.getItem(nameStorage)) !== null && isSameComment(JSON.parse(sessionStorage.getItem(nameStorage)), e.target.elements.comment.value)) {
             document.querySelector("#root").textContent = "Erreur : il ne peut pas y avoir deux commentaires identiques.";
             return;
         }
@@ -98,6 +99,8 @@ export const Views = ({ restaurants }) => {
         for(let i = 0; i < ratings.length; i++) {
             total += ratings[i].stars;
         }
+        console.log("#average" +
+        nameStorage.substr(nameStorage.length - 1, nameStorage.length))
         document.querySelector("#average" +
         nameStorage.substr(nameStorage.length - 1, nameStorage.length)).textContent =
         (total / ratings.length).toFixed(2);
@@ -122,12 +125,14 @@ export const Views = ({ restaurants }) => {
                     className="views-restaurant list-group list-group-flush mb-5" key={i}
                     style={{display: "none"}}>
                     <h3>{restaurant.restaurantName}</h3>
-                    {getRatingsInSession(JSON.parse(sessionStorage.getItem("addedViews" + i))).map((rating, j) => 
+                    {(restaurant.ratings.length !== 0 || sessionStorage.getItem("addedViews" + i) !== null) &&
+                    getRatingsInSession(JSON.parse(sessionStorage.getItem("addedViews" + i))).map((rating, j) => 
                         <li key={j} className="mb-2 list-group-item">
                             <p>{rating.comment}</p>
                             Note : {rating.stars}
                         </li>
                     )}
+                    {restaurant.ratings.length === 0 && sessionStorage.getItem("addedViews" + i) === null && "Aucun avis"}
                 </ul>
             )}
             <div id="add-view" className="mb-3" style={{display: "none"}}>
@@ -137,7 +142,7 @@ export const Views = ({ restaurants }) => {
                     <div className="form-group">
                         <label htmlFor="comment">Votre avis : </label>
                         <textarea className="form-control" type="text" name="comment" id="comment"
-                        onChange={handleCommentChange}>{comment}</textarea>
+                        onChange={handleCommentChange} required>{comment}</textarea>
                     </div>
                     <div className="form-group">
                         <label htmlFor="stars">Votre note :</label>
