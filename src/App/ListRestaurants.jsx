@@ -9,7 +9,7 @@ export const ListRestaurants = ({restaurants, mapBounds, min, max}) => {
                 ratings.push(rating);
             }
         }
-        let ratingsSession = JSON.parse(sessionStorage.getItem("addedViews" + indexRestaurant));
+        const ratingsSession = JSON.parse(sessionStorage.getItem("addedViews" + indexRestaurant));
         if(restaurant.ratings.length !== 0 || ratingsSession !== null) {
             ratings = pushRating(ratingsSession, ratings);
             let total = 0;
@@ -48,8 +48,8 @@ export const ListRestaurants = ({restaurants, mapBounds, min, max}) => {
                 restaurant.lat < mapBounds.ne.lat && restaurant.lat < mapBounds.nw.lat &&
                 restaurant.lng > mapBounds.nw.lng && restaurant.lng > mapBounds.sw.lng &&
                 restaurant.lng < mapBounds.ne.lng && restaurant.lng < mapBounds.se.lng &&
-                (averageRatings(restaurant, i) === "Pas de note" || averageRatings(restaurant, i) >= min || min === "") &&
-                (averageRatings(restaurant, i) === "Pas de note" || averageRatings(restaurant, i) <= max || max === "") &&
+                (averageRatings(restaurant, i) === "Pas de note" || averageRatings(restaurant, i) >= parseFloat(min).toFixed(2) || min === "") &&
+                (averageRatings(restaurant, i) === "Pas de note" || averageRatings(restaurant, i) <= parseFloat(max).toFixed(2) || max === "") &&
                 <li className="mr-2 list-group-item" key={i}>
                     <span id={"restaurant" + i} className="text-underline">
                         {restaurant.restaurantName}

@@ -3,13 +3,14 @@ import { RestaurantMap } from './RestaurantMap';
 import { UserMap } from './UserMap';
 import { ListRestaurants } from './ListRestaurants';
 import { Filter } from './Filter';
-import GoogleMapReact  from 'google-map-react';
+import GoogleMapReact from 'google-map-react';
 
 export class MapContainer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      places: [],
       center: null,
       zoom: 7,
       streetView: false,
@@ -26,21 +27,20 @@ export class MapContainer extends Component {
   componentDidMount = () => {
     if("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition((pos) => {
-          this.setState({
-            center: {
-              lat: pos.coords.latitude,
-              lng: pos.coords.longitude
-            }
-          })
-        });
-  
+        this.setState({
+          center: {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          }
+        })
+      });
     } else {
       console.error("Erreur : impossible de détemriner votre position.");
     }
   }
    
   fillByInitialRestaurants = () => {
-    let initialRestaurants = [];
+    const initialRestaurants = [];
     for(let restaurant of this.props.restaurants) {
       initialRestaurants.push(restaurant);
     }
@@ -48,7 +48,18 @@ export class MapContainer extends Component {
     return initialRestaurants;
   }
 
-  onChange = ({ bounds }) => {
+  onChange = ({ bounds, center }) => {
+    fetch("https://cors-anywhere.herokuapp.com/" +
+    "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + center.lat + "," + center.lng +
+    "&radius=10000&type=restaurant&key=" + process.env.REACT_APP_GOOGLE_MAPS_KEY)
+      .then(response => {
+          if(response.ok) {
+              return response.json();
+          } else {
+              throw new Error("Erreur lors du chargement de la liste des restaurants");
+          }
+      })
+      .then(data => {console.log(data)})
     this.setState({bounds: bounds});
   }
 
@@ -64,24 +75,22 @@ export class MapContainer extends Component {
 
   handleLongitudeChange = longitude => this.setState({longitude: longitude});
 
-  handleRestaurantNameChange = restaurantName => {
+  handleRestaurantNameChange = () => {
     this.verifyInput('restaurantName', /./, "Format incorrect.");
     this.verifyAllForm();
   }
 
-  handleAddressChange = address => {
+  handleAddressChange = () => {
     this.verifyInput('address', /./, "Format incorrect.");
     this.verifyAllForm();
   }
 
-  
-
-  handlePostalCodeChange = postalCode => {
+  handlePostalCodeChange = () => {
     this.verifyInput('postalCode', /^(([0-8][0-9])|(9[0-5]))[0-9]{3}$/, "Veuillez saisir un code postal valide.");
     this.verifyAllForm();
   }
 
-  handleTownChange = town => {
+  handleTownChange = () => {
     this.verifyInput('town', /^[a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]*([-'\s]|[a-zA-ZéèîïÉÈÎÏ]|[a-zéèêàçîï])*$/, "Format incorrect. Caractères autorisées : lettres, espaces, apostrophes et tirets.");
     this.verifyAllForm();
   }
@@ -121,7 +130,7 @@ export class MapContainer extends Component {
     if(!this.state.isDoingAddRestaurant) {
       return;
     }
-    let coordinates = {
+    const coordinates = {
       lat: e.lat,
       lng: e.lng
     }
@@ -152,7 +161,7 @@ export class MapContainer extends Component {
     if (document.querySelector("." + name) !== null) {
         document.querySelector('.alert').remove();
     }
-    let divError = document.createElement("div");
+    const divError = document.createElement("div");
     divError.classList.add("current-error");
     document.querySelector('#group-' + name).append(divError);
     document.querySelector('.current-error').classList.add('alert');
@@ -168,15 +177,14 @@ export class MapContainer extends Component {
       document.querySelector("#root").textContent = "Erreur : données envoyées incorrectes.";
       return;
     }
-    let newRestaurant = {
+    const newRestaurant = {
       restaurantName: e.target.elements.restaurantName.value,
       address: e.target.elements.address.value + ", " + e.target.elements.postalCode.value + " " + e.target.elements.town.value,
       lat: e.target.elements.latitude.value,
       lng: e.target.elements.longitude.value,
       ratings: []
     }
-    let numberNewRestaurant = this.props.restaurants.length;
-    console.log(numberNewRestaurant)
+    const numberNewRestaurant = this.props.restaurants.length;
     this.registerNewRestaurant("restaurant" + (numberNewRestaurant + 1), newRestaurant);
     this.clearAdditionForm();
   }
@@ -203,8 +211,8 @@ export class MapContainer extends Component {
   }
 
   setNewRestaurants = () => {
-    let allRestaurants = this.fillByInitialRestaurants();
-    let newRestaurant = JSON.parse(sessionStorage.getItem("restaurant" + (allRestaurants.length + 1)));
+    const allRestaurants = this.fillByInitialRestaurants();
+    const newRestaurant = JSON.parse(sessionStorage.getItem("restaurant" + (allRestaurants.length + 1)));
     newRestaurant.lat = parseFloat(newRestaurant.lat);
     newRestaurant.lng = parseFloat(newRestaurant.lng);
     allRestaurants.push(newRestaurant);
@@ -229,6 +237,7 @@ export class MapContainer extends Component {
           min={this.state.min} max={this.state.max} />
           <div id="map" style={{ height: '100vh', width: '100%' }}>
             <GoogleMapReact
+              ref={(map) => this.map = map}
               bootstrapURLKeys={{ key: this.props.apiKey }}
               defaultCenter={this.state.center}
               defaultZoom={this.state.zoom}
@@ -243,7 +252,7 @@ export class MapContainer extends Component {
                   text={restaurant.restaurantName} mapBounds={this.state.bounds} />)}
             </GoogleMapReact>
           </div>
-          <div id="addition-restaurant" className="my-1">
+          <div id="addition-restaurant" className="my-1 ml-2">
             <button id="button-addition" className="mx-auto" type="button" onClick={this.onClickAddition}>Ajouter un restaurant</button>
             <button id="button-leave-addition" className="mx-auto" type="button" style={{display: "none"}} onClick={this.onClickLeaveAddition}>Quitter le mode d'ajout</button>
             <p id="text-addition" style={{color: "red", display: "none"}}>Cliquez sur la carte pour ajouter un restaurant.</p>

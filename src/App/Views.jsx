@@ -21,7 +21,7 @@ export const Views = ({ restaurants }) => {
         if(sessionStorage.getItem(nameStorage) === null) {
             sessionStorage.setItem(nameStorage, JSON.stringify([JSON.stringify(newRating)]));
         } else {
-            let array = JSON.parse(sessionStorage.getItem(nameStorage))
+            const array = JSON.parse(sessionStorage.getItem(nameStorage))
             array.push(JSON.stringify(newRating));
             sessionStorage.setItem(nameStorage, JSON.stringify(array));
         }
@@ -68,10 +68,9 @@ export const Views = ({ restaurants }) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        let currentList = getCurrentList(document.querySelectorAll(".views-restaurant"));
-        let nameStorage = "addedViews" + currentList.getAttribute("id")
+        const currentList = getCurrentList(document.querySelectorAll(".views-restaurant"));
+        const nameStorage = "addedViews" + currentList.getAttribute("id")
         .slice((currentList.getAttribute("id").length - 1), currentList.getAttribute("id").length);
-        console.log(sessionStorage.getItem("addedViews6"))
         if(JSON.parse(sessionStorage.getItem(nameStorage)) !== null && isSameComment(JSON.parse(sessionStorage.getItem(nameStorage)), e.target.elements.comment.value)) {
             document.querySelector("#root").textContent = "Erreur : il ne peut pas y avoir deux commentaires identiques.";
             return;
@@ -82,7 +81,7 @@ export const Views = ({ restaurants }) => {
             sendErrorToUser();
             return;
         }
-        let newRating = {
+        const newRating = {
             stars: parseInt(e.target.elements.stars.value),
             comment: e.target.elements.comment.value
         }
@@ -99,15 +98,13 @@ export const Views = ({ restaurants }) => {
         for(let i = 0; i < ratings.length; i++) {
             total += ratings[i].stars;
         }
-        console.log("#average" +
-        nameStorage.substr(nameStorage.length - 1, nameStorage.length))
         document.querySelector("#average" +
         nameStorage.substr(nameStorage.length - 1, nameStorage.length)).textContent =
         (total / ratings.length).toFixed(2);
     }
 
     const getRatingsInSession = (ratingsSession) => {
-        let arrayRatings = [];
+        const arrayRatings = [];
         for(let ratingSession of ratingsSession) {
             arrayRatings.push(JSON.parse(ratingSession));
         }

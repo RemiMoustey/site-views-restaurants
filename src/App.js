@@ -18,7 +18,6 @@ export default class App extends Component {
 
   componentDidMount = () => {
     if(this.state.data === null) {
-      let restaurants = null;
       this.setState({isLoading: true});
       fetch(this.props.apiURL)
       .then(response => {
@@ -29,15 +28,13 @@ export default class App extends Component {
           }
       })
       .then(data => {
-        restaurants = data;
-        console.log(restaurants)
-        let initialLength = restaurants.length + 1;
+        const restaurants = data;
+        const initialLength = restaurants.length + 1;
 
         for(let i = initialLength; sessionStorage.getItem("restaurant" + i) !== null; i++) {
-          let restaurant = JSON.parse(sessionStorage.getItem("restaurant" + i));
+          const restaurant = JSON.parse(sessionStorage.getItem("restaurant" + i));
           restaurant.lat = parseFloat(restaurant.lat);
           restaurant.lng = parseFloat(restaurant.lng);
-          console.log(restaurant)
           restaurants.push(restaurant);
         }
         this.setState({ data: restaurants, isLoading: false });
@@ -47,7 +44,6 @@ export default class App extends Component {
   }
 
   handleChangeMapContainer = e => {
-    console.log(e)
     this.setState({data: e})
   }
   
@@ -57,15 +53,15 @@ export default class App extends Component {
     }
 
     return (
-      <div className="container">
-        <h1 className="text-center">Site d'avis de restaurants</h1>
-        <div>
-          <MapContainer apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} restaurants={this.state.data} onRestaurantsChange={this.handleChangeMapContainer} />
+        <div className="container">
+          <h1 className="text-center">Site d'avis de restaurants</h1>
+          <div>
+            <MapContainer apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} restaurants={this.state.data} onRestaurantsChange={this.handleChangeMapContainer} />
+          </div>
+          <div id="views" style={{display: "none"}}>
+            <Views restaurants={this.state.data} />
+          </div>
         </div>
-        <div id="views" style={{display: "none"}}>
-          <Views restaurants={this.state.data} />
-        </div>
-      </div>
     );
   }
 }
