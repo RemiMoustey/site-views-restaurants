@@ -20,7 +20,8 @@ export class MapContainer extends Component {
       max: 5,
       name: null,
       view: null,
-      isDoingAddRestaurant: false
+      isDoingAddRestaurant: false,
+      error: null
     }
   }
 
@@ -48,10 +49,8 @@ export class MapContainer extends Component {
     return initialRestaurants;
   }
 
-  onChange = ({ bounds, center }) => {
-    fetch("https://cors-anywhere.herokuapp.com/" +
-    "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + center.lat + "," + center.lng +
-    "&radius=10000&type=restaurant&key=" + process.env.REACT_APP_GOOGLE_MAPS_KEY)
+  recupResults = (url) => 
+      fetch(url)
       .then(response => {
           if(response.ok) {
               return response.json();
@@ -59,7 +58,56 @@ export class MapContainer extends Component {
               throw new Error("Erreur lors du chargement de la liste des restaurants");
           }
       })
-      .then(data => {console.log(data)})
+      .then(data => data)
+      .catch(error => this.setState({ error }));
+
+  isRestaurantAlreadyLoaded = (restaurant) => {
+    console.log(this.props.restaurants)
+    for(let presentRestaurant of this.props.restaurants) {
+      if(presentRestaurant.lat === restaurant.geometry.location.lat && presentRestaurant.lng === restaurant.geometry.location.lng) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  setNewRestaurantsByPlaces = async (center) => {
+    const data = await this.recupResults("https://cors-anywhere.herokuapp.com/" +
+    "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + center.lat + "," + center.lng +
+    "&radius=10000&type=restaurant&key=" + process.env.REACT_APP_GOOGLE_MAPS_KEY);
+    if(typeof data === 'undefined') {
+      return;
+    }
+    for(let restaurant of data.results) {
+      if(this.isRestaurantAlreadyLoaded(restaurant)) {
+        continue;
+      }
+      const newRestaurantByPlaces = {
+        restaurantName: restaurant.name,
+        address: restaurant.vicinity,
+        lat: restaurant.geometry.location.lat,
+        lng: restaurant.geometry.location.lng,
+        ratings: []
+      }
+      const details = await this.recupResults("https://cors-anywhere.herokuapp.com/" +
+      "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + restaurant.place_id +
+      "&fields=reviews&key=" +
+      process.env.REACT_APP_GOOGLE_MAPS_KEY);
+      if(typeof details.result.reviews === 'undefined') {
+        continue;
+      }
+      for(let review of details.result.reviews) {
+        newRestaurantByPlaces.ratings.push({
+          stars: review.rating,
+          comment: review.text
+        });
+      } 
+      this.registerNewRestaurant("restaurant" + (this.props.restaurants.length + 1), newRestaurantByPlaces);
+    }
+  }
+
+  onChange = ({ bounds, center }) => {
+    this.setNewRestaurantsByPlaces(center);
     this.setState({bounds: bounds});
   }
 
@@ -207,10 +255,10 @@ export class MapContainer extends Component {
     } else {
       sessionStorage.setItem("numberAddedRestaurants", parseInt(sessionStorage.getItem("numberAddedRestaurants")) + 1);
     }
-    this.setNewRestaurants();
+    this.setNewRestaurant();
   }
 
-  setNewRestaurants = () => {
+  setNewRestaurant = () => {
     const allRestaurants = this.fillByInitialRestaurants();
     const newRestaurant = JSON.parse(sessionStorage.getItem("restaurant" + (allRestaurants.length + 1)));
     newRestaurant.lat = parseFloat(newRestaurant.lat);
@@ -223,7 +271,6 @@ export class MapContainer extends Component {
     if(this.state.center === null) {
       return (<p className="ml-2">Chargement en cours...</p>);
     }
-
     return (
       <>
         <section id="list-restaurants">
@@ -236,13 +283,8 @@ export class MapContainer extends Component {
           <ListRestaurants restaurants={this.props.restaurants} mapBounds={this.state.bounds}
           min={this.state.min} max={this.state.max} />
           <div id="map" style={{ height: '100vh', width: '100%' }}>
-            <GoogleMapReact
-              ref={(map) => this.map = map}
-              bootstrapURLKeys={{ key: this.props.apiKey }}
-              defaultCenter={this.state.center}
-              defaultZoom={this.state.zoom}
-              onChange={this.onChange}
-              onClick={this.onClickMap}>
+            <GoogleMapReact ref={(map) => this.map = map} bootstrapURLKeys={{ key: this.props.apiKey }} defaultCenter={this.state.center}
+              defaultZoom={this.state.zoom} onChange={this.onChange} onClick={this.onClickMap}>
               <UserMap lat={this.state.center.lat} lng={this.state.center.lng} />
               {this.props.restaurants.map((restaurant, i) => this.state.bounds !== null &&
               (restaurant.ratings.length === 0 || this.averageRatings(restaurant.ratings) >= this.state.min || this.state.min === "") &&

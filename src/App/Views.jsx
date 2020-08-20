@@ -105,8 +105,10 @@ export const Views = ({ restaurants }) => {
 
     const getRatingsInSession = (ratingsSession) => {
         const arrayRatings = [];
-        for(let ratingSession of ratingsSession) {
-            arrayRatings.push(JSON.parse(ratingSession));
+        if(ratingsSession !== null) {
+            for(let ratingSession of ratingsSession) {
+                arrayRatings.push(JSON.parse(ratingSession));
+            }
         }
         return arrayRatings;
     }

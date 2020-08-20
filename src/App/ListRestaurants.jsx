@@ -31,9 +31,11 @@ export const ListRestaurants = ({restaurants, mapBounds, min, max}) => {
     }
 
     const pushRating = (ratingsSession, arrayRatings) => {
-        for(let ratingSession of ratingsSession) {
-            if(!isRatingAlreadyPresent(ratingSession, arrayRatings)) {
-                arrayRatings.push(JSON.parse(ratingSession));
+        if(ratingsSession !== null) {
+            for(let ratingSession of ratingsSession) {
+                if(!isRatingAlreadyPresent(ratingSession, arrayRatings)) {
+                    arrayRatings.push(JSON.parse(ratingSession));
+                }
             }
         }
         return arrayRatings;
