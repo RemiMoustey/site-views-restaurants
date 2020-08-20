@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StreetView } from './StreetView';
 
-export const RestaurantMap = ({ apiKey, index, lat, lng, text }) => {
+export const RestaurantMap = ({ apiKey, index, lat, lng, text, onClickedRestaurant }) => {
     const wrapperRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => document.addEventListener("click", handleClickOutside), []);
 
-    const handleClick = () => {
+    const handleClick = e => {
         setIsVisible(b => !b);
         document.querySelectorAll(".views-restaurant").forEach((views) => {
             views.style.display = "none";
@@ -16,6 +16,7 @@ export const RestaurantMap = ({ apiKey, index, lat, lng, text }) => {
         document.querySelector("#views-restaurant" + index).style.display = "block";
         document.querySelector("#add-view").style.display = "block";
         document.querySelector("#views").style.display = "block";
+        onClickedRestaurant(e.target.getAttribute('id'));
     }
 
     const handleClickOutside = (event) => {

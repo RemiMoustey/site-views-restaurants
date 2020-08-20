@@ -3,6 +3,7 @@ import { RestaurantMap } from './RestaurantMap';
 import { UserMap } from './UserMap';
 import { ListRestaurants } from './ListRestaurants';
 import { Filter } from './Filter';
+import { Views } from './Views';
 import GoogleMapReact from 'google-map-react';
 
 export class MapContainer extends Component {
@@ -21,7 +22,8 @@ export class MapContainer extends Component {
       name: null,
       view: null,
       isDoingAddRestaurant: false,
-      error: null
+      error: null,
+      clickedRestaurant: null
     }
   }
 
@@ -62,7 +64,6 @@ export class MapContainer extends Component {
       .catch(error => this.setState({ error }));
 
   isRestaurantAlreadyLoaded = (restaurant) => {
-    console.log(this.props.restaurants)
     for(let presentRestaurant of this.props.restaurants) {
       if(presentRestaurant.lat === restaurant.geometry.location.lat && presentRestaurant.lng === restaurant.geometry.location.lng) {
         return true;
@@ -267,6 +268,10 @@ export class MapContainer extends Component {
     this.props.onRestaurantsChange(allRestaurants);
   }
 
+  handleClickedRestaurant = e => {
+    this.setState({clickedRestaurant: e});
+  }
+
   render = () => {
     if(this.state.center === null) {
       return (<p className="ml-2">Chargement en cours...</p>);
@@ -291,7 +296,8 @@ export class MapContainer extends Component {
               (restaurant.ratings.length === 0 || this.averageRatings(restaurant.ratings) <= this.state.max || this.state.max === "") &&
                 <RestaurantMap apiKey={this.props.apiKey} key={i} index={i}
                   lat={restaurant.lat} lng={restaurant.lng}
-                  text={restaurant.restaurantName} mapBounds={this.state.bounds} />)}
+                  text={restaurant.restaurantName} mapBounds={this.state.bounds} 
+                  onClickedRestaurant={this.handleClickedRestaurant}/>)}
             </GoogleMapReact>
           </div>
           <div id="addition-restaurant" className="my-1 ml-2">
@@ -327,6 +333,9 @@ export class MapContainer extends Component {
             </form>
           </div>
         </section>
+        <div id="views" style={{display: "none"}}>
+          <Views restaurants={this.props.restaurants} current={this.state.clickedRestaurant} />
+        </div>
       </>
     );
   }

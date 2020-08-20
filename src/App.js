@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { MapContainer } from './App/MapContainer';
-import { Views } from './App/Views';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 export default class App extends Component {
 
@@ -57,9 +55,6 @@ export default class App extends Component {
           <h1 className="text-center">Site d'avis de restaurants</h1>
           <div>
             <MapContainer apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} restaurants={this.state.data} onRestaurantsChange={this.handleChangeMapContainer} />
-          </div>
-          <div id="views" style={{display: "none"}}>
-            <Views restaurants={this.state.data} />
           </div>
         </div>
     );
