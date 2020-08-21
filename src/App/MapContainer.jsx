@@ -75,7 +75,7 @@ export class MapContainer extends Component {
   setNewRestaurantsByPlaces = async (center) => {
     const data = await this.recupResults("https://cors-anywhere.herokuapp.com/" +
     "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + center.lat + "," + center.lng +
-    "&radius=10000&type=restaurant&key=" + process.env.REACT_APP_GOOGLE_MAPS_KEY);
+    "&radius=10000&type=restaurant&key=AIzaSyBAzwQxuCdB-FUc3SgPAaNFHEvQ4FLjUAk");
     if(typeof data === 'undefined') {
       return;
     }
@@ -92,8 +92,7 @@ export class MapContainer extends Component {
       }
       const details = await this.recupResults("https://cors-anywhere.herokuapp.com/" +
       "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + restaurant.place_id +
-      "&fields=reviews&key=" +
-      process.env.REACT_APP_GOOGLE_MAPS_KEY);
+      "&fields=reviews&key=AIzaSyBAzwQxuCdB-FUc3SgPAaNFHEvQ4FLjUAk");
       if(typeof details.result.reviews === 'undefined') {
         continue;
       }

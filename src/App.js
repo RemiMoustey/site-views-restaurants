@@ -54,7 +54,7 @@ export default class App extends Component {
         <div className="container">
           <h1 className="text-center">Site d'avis de restaurants</h1>
           <div>
-            <MapContainer apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} restaurants={this.state.data} onRestaurantsChange={this.handleChangeMapContainer} />
+            <MapContainer apiKey="AIzaSyBAzwQxuCdB-FUc3SgPAaNFHEvQ4FLjUAk" restaurants={this.state.data} onRestaurantsChange={this.handleChangeMapContainer} />
           </div>
         </div>
     );
