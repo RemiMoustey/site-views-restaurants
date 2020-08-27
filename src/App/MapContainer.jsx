@@ -75,7 +75,7 @@ export class MapContainer extends Component {
   setNewRestaurantsByPlaces = async (center) => {
     const data = await this.recupResults("https://cors-anywhere.herokuapp.com/" +
     "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + center.lat + "," + center.lng +
-    "&radius=10000&type=restaurant&key=AIzaSyBAzwQxuCdB-FUc3SgPAaNFHEvQ4FLjUAk");
+    "&radius=10000&type=restaurant&key=" + process.env.REACT_APP_GOOGLE_MAPS_KEY);
     if(typeof data === 'undefined') {
       return;
     }
@@ -92,7 +92,7 @@ export class MapContainer extends Component {
       }
       const details = await this.recupResults("https://cors-anywhere.herokuapp.com/" +
       "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + restaurant.place_id +
-      "&fields=reviews&key=AIzaSyBAzwQxuCdB-FUc3SgPAaNFHEvQ4FLjUAk");
+      "&fields=reviews&key=" + process.env.REACT_APP_GOOGLE_MAPS_KEY);
       if(typeof details.result.reviews === 'undefined') {
         continue;
       }
@@ -304,14 +304,8 @@ export class MapContainer extends Component {
             <button id="button-leave-addition" className="mx-auto" type="button" style={{display: "none"}} onClick={this.onClickLeaveAddition}>Quitter le mode d'ajout</button>
             <p id="text-addition" style={{color: "red", display: "none"}}>Cliquez sur la carte pour ajouter un restaurant.</p>
             <form method="post" action="#" id="form-addition-restaurant" style={{display: "none"}} onSubmit={this.handleSubmit}>
-              <div className="form-group" id="group-latitude">
-                <label htmlFor="latitude" className="mr-1">Latitude :</label><br />
-                <input type="number" name="latitude" id="latitude" disabled required onChange={this.handleLatitudeChange} />
-              </div>
-              <div className="form-group" id="group-longitude">
-                <label htmlFor="longitude" className="mr-1">Longitude :</label><br />
-                <input type="number" name="longitude" id="longitude" disabled required onChange={this.handleLongitudeChange} />
-              </div>
+                <input type="hidden" name="latitude" id="latitude" onChange={this.handleLatitudeChange} />
+                <input type="hidden" name="longitude" id="longitude" onChange={this.handleLongitudeChange} />
               <div className="form-group" id="group-restaurantName">
                 <label htmlFor="restaurantName" className="mr-1">Nom du restaurant :</label><br />
                 <input type="text" name="restaurantName" id="restaurantName" required onChange={this.handleRestaurantNameChange} />

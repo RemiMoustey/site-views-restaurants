@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#list {
+  max-height: 700px;
+  overflow: auto;
+}
+
+.views-restaurant {
+  overflow: auto;
+  max-height: 900px;
+}
+
+@media all and (max-width: 767px) {
+  #list {
+    max-height: 400px;
+  }
+
+  .views-restaurant {
+    overflow: auto;
+    max-height: 700px;
+  }  
+}
