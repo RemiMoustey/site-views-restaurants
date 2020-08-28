@@ -17,16 +17,20 @@ export const RestaurantMap = ({ apiKey, index, lat, lng, text, onClickedRestaura
         document.querySelector("#add-view").style.display = "block";
         document.querySelector("#views").style.display = "block";
         onClickedRestaurant(e.target.getAttribute('id'));
-    }
+    };
 
     const handleClickOutside = (event) => {
         if(wrapperRef.current && !wrapperRef.current.contains(event.target)) {
             setIsVisible(() => false);
         }
-    }
+    };
 
-    return <>
-        <p><span id={"restaurant" + index} className="marker" style={{backgroundColor: "green", color: "white", cursor: "pointer"}} onClick={handleClick} ref={wrapperRef}>{text}</span></p>
-        { isVisible && <StreetView apiKey={apiKey} lat={lat} lng={lng} />}
-    </>
-}
+    return (
+        <>
+            <p><span id={"restaurant" + index} className="marker"
+            style={{backgroundColor: "green", color: "white", cursor: "pointer"}}
+            onClick={handleClick} ref={wrapperRef}>{text}</span></p>
+            { isVisible && <StreetView apiKey={apiKey} lat={lat} lng={lng} />}
+        </>
+    );
+};

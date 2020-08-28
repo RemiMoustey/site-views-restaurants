@@ -52,7 +52,7 @@ export const Views = ({ restaurants }) => {
             }
         }
         sendErrorToUser();
-    }
+    };
 
     const areStarsGood = (stars) => parseInt(stars) === 1 || parseInt(stars) === 2 ||
     parseInt(stars) === 3 || parseInt(stars) === 4 || parseInt(stars) === 5;
@@ -64,14 +64,15 @@ export const Views = ({ restaurants }) => {
             }
         }
         return false;
-    }
+    };
 
     const handleSubmit = e => {
         e.preventDefault();
         const currentList = getCurrentList(document.querySelectorAll(".views-restaurant"));
         const nameStorage = "addedViews" + currentList.getAttribute("id")
         .slice(16, currentList.getAttribute("id").length);
-        if(JSON.parse(sessionStorage.getItem(nameStorage)) !== null && isSameComment(JSON.parse(sessionStorage.getItem(nameStorage)), e.target.elements.comment.value)) {
+        if(JSON.parse(sessionStorage.getItem(nameStorage)) !== null &&
+        isSameComment(JSON.parse(sessionStorage.getItem(nameStorage)), e.target.elements.comment.value)) {
             document.querySelector("#root").textContent = "Erreur : il ne peut pas y avoir deux commentaires identiques.";
             return;
         }
@@ -84,7 +85,7 @@ export const Views = ({ restaurants }) => {
         const newRating = {
             stars: parseInt(e.target.elements.stars.value),
             comment: e.target.elements.comment.value
-        }
+        };
         addRatingInStorage(nameStorage, newRating);
         calculateNewAverage(getRatingsInSession(JSON.parse(sessionStorage.getItem(nameStorage))), nameStorage);
         document.getElementById("comment").value = "";
@@ -101,7 +102,7 @@ export const Views = ({ restaurants }) => {
                 return ++number;
             }
         });
-    }
+    };
 
     const calculateNewAverage = (ratings, nameStorage) => {
         let total = 0;
@@ -109,9 +110,8 @@ export const Views = ({ restaurants }) => {
             total += ratings[i].stars;
         }
         document.querySelector("#average" +
-        nameStorage.substr(10, nameStorage.length)).textContent =
-        (total / ratings.length).toFixed(2);
-    }
+        nameStorage.substr(10, nameStorage.length)).textContent = (total / ratings.length).toFixed(2);
+    };
 
     const getRatingsInSession = (ratingsSession) => {
         const arrayRatings = [];
@@ -121,7 +121,7 @@ export const Views = ({ restaurants }) => {
             }
         }
         return arrayRatings;
-    }
+    };
 
     return (
         <section id="views-section">
@@ -168,4 +168,4 @@ export const Views = ({ restaurants }) => {
             </div>
         </section>
     );
-}
+};

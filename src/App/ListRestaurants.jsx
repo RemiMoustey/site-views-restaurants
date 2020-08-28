@@ -66,4 +66,4 @@ export const ListRestaurants = ({restaurants, mapBounds, min, max}) => {
         </div>
 
     );
-}
+};

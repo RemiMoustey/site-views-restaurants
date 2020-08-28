@@ -21,4 +21,4 @@ export const StreetView = ({ apiKey, lat, lng }) => {
             />
         </div>
     );
-}
+};

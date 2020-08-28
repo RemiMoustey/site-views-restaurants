@@ -24,7 +24,7 @@ export class MapContainer extends Component {
       isDoingAddRestaurant: false,
       error: null,
       clickedRestaurant: null
-    }
+    };
   }
 
   componentDidMount = () => {
@@ -89,7 +89,7 @@ export class MapContainer extends Component {
         lat: restaurant.geometry.location.lat,
         lng: restaurant.geometry.location.lng,
         ratings: []
-      }
+      };
       const details = await this.recupResults("https://cors-anywhere.herokuapp.com/" +
       "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + restaurant.place_id +
       "&fields=reviews&key=" + process.env.REACT_APP_GOOGLE_MAPS_KEY);
@@ -181,7 +181,7 @@ export class MapContainer extends Component {
     const coordinates = {
       lat: e.lat,
       lng: e.lng
-    }
+    };
     document.getElementById("latitude").value = coordinates.lat;
     document.getElementById("longitude").value = coordinates.lng;
     document.getElementById("form-addition-restaurant").style.display = "block";
@@ -195,8 +195,7 @@ export class MapContainer extends Component {
     if (document.querySelectorAll('.' + id + '-alert').length !== 0) {
       document.querySelector('.' + id + '-alert').remove();
     }
-    if (document.getElementById(id).required || document.getElementById(id).value !== "")
-    {
+    if (document.getElementById(id).required || document.getElementById(id).value !== "") {
         if (document.getElementById(id).validity.valueMissing) {   
             this.addError(id, "Élément manquant");
         } else if (regex.test((document.getElementById(id).value)) === false) {
@@ -231,7 +230,7 @@ export class MapContainer extends Component {
       lat: e.target.elements.latitude.value,
       lng: e.target.elements.longitude.value,
       ratings: []
-    }
+    };
     const numberNewRestaurant = this.props.restaurants.length;
     this.registerNewRestaurant("restaurant" + (numberNewRestaurant + 1), newRestaurant);
     this.clearAdditionForm();
